@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 450px;
+            height: 450px;
+            border: 1px solid #aaa;
+            position: relative;
+            top: 100px;
+            left: 100px;
+        }
+
+        .small {
+            width: 450px;
+            height: 450px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 10px solid #000;
+        }
+
+        .mask {
+            position: absolute;
+            background-color: rgba(255, 255, 0, 0.6);
+            width: 225px;
+            height: 225px;
+            top: 0%;
+            left: 0%;
+            display: none;
+        }
+
+        .big {
+            width: 450px;
+            height: 450px;
+            border: 10px solid #aaa;
+            position: absolute;
+            left: 500px;
+            top: 0;
+            overflow: hidden;
+            display: none;
+        }
+
+        .big>img {
+            width: 900px;
+            height: 900px;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+
+        <div class="small">
+            <img src="images1/s.jpg" alt="">
+            <!-- 淡黄色的块 遮罩-->
+            <div class="mask"></div>
+        </div>
+
+        <!-- 右侧的大的细节图 -->
+        <div class="big">
+            <img src="images1/big.jpg" alt="">
+        </div>
+
+
+    </div>
+</body>
+<script>
+    // 原生JS 遇见图片；
+    window.onload = function () {
+        var box = document.querySelector(".box");
+        var small = document.querySelector(".small")
+        var mask = document.querySelector(".mask");
+        var big = document.querySelector(".big");
+        var img = document.querySelector(".big img");
+        box.onmouseover = function () {
+            mask.style.display = "block";
+            big.style.display = "block";
+
+        };
+        box.onmouseout = function () {
+            mask.style.display = "none";
+            big.style.display = "none";
+        };
+
+        box.onmousemove = function (e) {
+            // e.pageX  e.pageY
+            var left = e.pageX - mask.offsetWidth / 2 - box.offsetLeft;
+            var top = e.pageY - mask.offsetHeight / 2 - box.offsetTop;
+
+            if (left < 0) {
+                left = 0;
+            }
+            var max_left = small.clientWidth - mask.offsetWidth;
+            if (left > max_left) {
+                left = max_left;
+            }
+            if (top < 0) {
+                top = 0;
+            }
+            var max_top = small.clientHeight - mask.offsetHeight;
+            if (top > max_top) {
+                top = max_top;
+            }
+
+            mask.style.left = left + "px";
+            mask.style.top = top + "px";
+            // 设置黄色阴影移动范围
+
+
+            var x = max_left;
+            var X = img.offsetWidth - big.clientWidth;
+            var bigLeft = left * X / x;
+            img.style.left = -bigLeft + 'px';
+
+            var y = max_top;
+            var Y = img.offsetHeight - big.clientHeight;
+            var bigHeight = top * Y / y;
+            img.style.top = -bigHeight + 'px';
+        };
+
+    }
+</script>
+
+</html>

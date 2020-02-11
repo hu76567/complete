@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>微博发布效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .weibo {
+            width: 600px;
+            border: 1px solid #ccc;
+            margin: 100px auto;
+            padding: 10px;
+        }
+
+        .weibo-text {
+            width: 590px;
+            height: 140px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            resize: none;
+        }
+
+        .weibo-text:focus {
+            border-color: #f60;
+        }
+
+        .weibo-btn {
+            width: 80px;
+            height: 30px;
+            background-color: #f90;
+            color: #fff;
+            border: 0 none;
+            margin-top: 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            outline: 0 none;
+        }
+
+        .weibo-list {
+            padding-top: 10px;
+        }
+
+        .weibo-list li {
+            font-size: 14px;
+            line-height: 30px;
+            border-bottom: 1px dotted #ccc;
+            overflow: hidden;
+        }
+
+        .weibo-list li p {
+            float: left;
+        }
+
+        .weibo-list li span {
+            float: right;
+            cursor: pointer;
+        }
+
+        .weibo-list li input {
+            height: 24px;
+            line-height: 24px;
+            width: 300px;
+            font-size: 14px;
+            border: 0 none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="weibo">
+        <textarea class="weibo-text"></textarea>
+        <input class="weibo-btn" value="发布" type="button">
+        <ul class="weibo-list">
+        </ul>
+    </div>
+</body>
+<script>
+    //--------------------------------新增-------------------------------
+
+    var btn = document.querySelector(".weibo-btn");
+    var text = document.querySelector(".weibo-text");
+    var ul = document.querySelector(".weibo-list");
+    var list = [];
+
+
+
+    // --------------------------------------------------新增的DOM操作
+
+    btn.onclick = function () {
+
+        //  生成id
+        var sf = Math.random() + "_" + Date.now();
+        //  获取文本域内容
+        var val = text.value;
+        //    优化输入不能为空
+        if (text.value == "") {
+            alert("请输入内容");
+            return;
+        }
+        // 创建li节点
+        var li = document.createElement("li");
+        // 将从文本域获取的内容添加到新的li标签中   将id加到li中,建立一一绑定关系
+        li.innerHTML = `<p>${val}</p> <span sf=${sf}>删除</span>`;
+        // （永远）获取ul第一个li子元素
+
+        // var first = ul.children[0];
+        //下面 first变为lis[0]
+
+        var lis = ul.children;
+        // 添加到第一个li子元素的前面
+        ul.insertBefore(li, lis[0]);
+        // 优化 添加后文本域设置为空
+        text.value = "";
+
+
+        //  ------------------------------------------------新增的数据操作
+        //  弊端  只能保存一条，每存一次，会把上次的覆盖掉；
+        // 原因是每次存储都新建了一个list；   解决办法：把var list放到全局
+        // 存储到本地
+        var obj = {};
+        obj.val = val;
+        // 将带着sf的li存到本地里面;
+        obj.sf = sf;
+        // 将对象放入数组 从前添加
+        list.unshift(obj);
+        // 转化
+        var str = JSON.stringify(list);
+        // 存到本地
+        localStorage.setItem("list", str);
+    }
+
+
+    // ------------------------从本地存储中获取数据---------------------
+    // 获取  页面刷新把本地数据获取过来
+    var str = localStorage.getItem("list");
+    // 优化 判断本地是否有数据，有数据进行转化，没有数据不转化
+    if (str == null) {
+    } else {
+        list = JSON.parse(str);
+    }
+    // 显示在页面列表上 
+    for (var i = 0; i < list.length; i++) {
+        var one = list[i];
+        // 创建li节点
+        var li = document.createElement("li");
+        // 将从存储获取的内容添加到新的li标签中   从本地获取数据是也要带着sf信息
+        li.innerHTML = `<p>${one.val}</p> <span sf=${one.sf}>删除</span>`;
+        // 添加到ul里面
+        var lis = ul.children;
+        // 从后添加
+        ul.appendChild(li, lis[0]);
+    }
+
+
+    //-----------------删除---------------------
+    //删除方法1  
+    // 弊端:每个按钮都要注册,每新增一次都需要重新获取所有的li
+    // var dels = document.querySelectorAll("span");
+    // for (var i = 0; i < dels.length; i++) {
+    //   dels[i].onclick = function () {
+    //     var li = this.parentNode;
+    //     ul.removeChild(li);
+    //   }
+    // }
+
+    //删除方法二 -------------------------------------------------------页面删除
+    // 用事件委托 1；父级注册  2；点击的是哪个
+    ul.onclick = function (e) {
+        //  e.target 点击的是哪里
+        if (e.target.nodeName == "SPAN") {
+            // 找到当前点击的是谁,然后在找到父元素
+            var li = e.target.parentNode;
+            ul.removeChild(li);
+
+            // -----------------------------------------------------本地存储删除
+            // 获取要删除对象的的sf
+            var del_sf = e.target.getAttribute("sf");
+            // 从资料库删除
+            for (var i = 0; i < list.length; i++) {
+                var one = list[i];
+                if (one.sf == del_sf) {
+                    list.splice(i, 1);
+                    break;
+                }
+            }
+            // 将修改后的List再存到本地存储 ，才能显示真实删除
+            var str = JSON.stringify(list);
+            localStorage.setItem("list", str);
+        }
+    }
+
+
+    // 组合键发布   ctrl+Enter发布
+    // text.onkeydown = function (e) {
+    //     if (e.keyCode == 13 && e.ctrlKey) {
+    //         btn.onclick();
+    //     }
+    // }
+
+</script>
+
+</html>

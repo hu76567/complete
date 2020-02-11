@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>手风琴</title>
+    <style>
+        ul {
+            list-style: none;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            width: 1200px;
+            height: 400px;
+            margin: 50px auto;
+            border: 1px solid red;
+            overflow: hidden;
+        }
+
+        div li {
+            width: 240px;
+            height: 400px;
+            float: left;
+            transition: width 500ms;
+        }
+
+        div ul {
+            width: 1200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <ul>
+            <li>
+                <a href="#">
+                    <img src="./images1/1.jpg" alt="">
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="./images1/2.jpg" alt="">
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="./images1/3.jpg" alt="">
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="./images1/4.jpg" alt="">
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="./images1/5.jpg" alt="">
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    window.onload = function () {
+        var lis = document.querySelectorAll("li");
+        for (var i = 0; i < lis.length; i++) {
+            lis[i].onmouseover = function () {
+                for (var j = 0; j < lis.length; j++) {
+                    lis[j].style.width = "100px";
+                }
+                this.style.width = "800px";
+            }
+            lis[i].onmouseout = function () {
+                for (var j = 0; j < lis.length; j++) {
+                    lis[j].style.width = "240px";
+                }
+            }
+        }
+    }
+</script>
+
+</html>

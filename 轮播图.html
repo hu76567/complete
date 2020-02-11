@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .box {
+            width: 730px;
+            height: 454px;
+            padding: 8px;
+            border: 1px solid green;
+            margin: 100px auto;
+        }
+
+        .inner {
+            position: relative;
+            overflow: hidden;
+            height: 454px;
+        }
+
+        #imglist {
+            width: 700%;
+            position: absolute;
+            left: 0;
+            /* left变化的时候，才会有过渡效果 */
+            transition: left 300ms linear;
+        }
+
+        li {
+            float: left;
+        }
+
+        .list {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            margin-left: -85px;
+        }
+
+        .list i {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #fff;
+            color: #333;
+            float: left;
+            font-style: normal;
+            line-height: 20px;
+            font-size: 14px;
+            text-align: center;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .list i:last-child {
+            margin-right: 0;
+        }
+
+        .list i.current {
+            background-color: skyblue;
+            color: #fff;
+        }
+
+        .arrow {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            margin-top: -30px;
+        }
+
+        .arrow-left,
+        .arrow-right {
+            width: 30px;
+            height: 60px;
+            position: absolute;
+            font: 20px/60px "consolas";
+            color: #fff;
+            background-color: rgba(0, 0, 0, .3);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .arrow-right {
+            right: 0;
+        }
+
+        .dis {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box" id="box">
+        <div class="inner" id="inner">
+            <ul id="imglist">
+                <li>
+                    <a href="#"><img src="images/1.jpg" alt=""></a>
+                </li>
+                <li>
+                    <a href="#"><img src="images/2.jpg" alt=""></a>
+                </li>
+                <li>
+                    <a href="#"><img src="images/3.jpg" alt=""></a>
+                </li>
+                <li>
+                    <a href="#"><img src="images/4.jpg" alt=""></a>
+                </li>
+                <li>
+                    <a href="#"><img src="images/5.jpg" alt=""></a>
+                </li>
+                <li>
+                    <a href="#"><img src="images/6.jpg" alt=""></a>
+                </li>
+            </ul>
+            <div class="list">
+                <i class="current"></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+            <div class="arrow">
+                <span class="arrow-left">&lt;</span>
+                <span class="arrow-right">&gt;</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    //等待文件加载完毕后  ，在需要加载图片的时候用
+    window.onload = function () {
+        var box = document.querySelector("#box");
+        var left = document.querySelector(".arrow-left");
+        var right = document.querySelector(".arrow-right");
+        var lis = document.querySelectorAll("li");
+        var ul = document.querySelector("#imglist");
+        var pics = document.querySelector("#imglist>li");
+        var w = lis[0].offsetWidth;
+        var lisp = document.querySelectorAll("i");
+        var num = 0;
+        left.onclick = function () {
+            // 移动的几个图片的距离
+            num--;
+            // 到最后一张的时候回到第一张
+            if (num == -1) {
+                num = 5;
+            }
+            // 移动的距离  实际显示的宽度*倍数
+            var juli = num * w;
+            //    移动
+            ul.style.left = `-${juli}px`;
+        }
+
+        right.onclick = function () {
+            // 移动的几个图片的距离
+            num++;
+            // 到最后一张的时候回到第一张
+            if (num == 6) {
+                num = 0;
+            }
+            // 移动的距离  实际显示的宽度*倍数
+            var juli = num * w;
+            //    移动
+            ul.style.left = `-${juli}px`;
+
+
+            // 修改小点样式
+            for (var i = 0; i < lisp.length; i++) {
+                if (i == num) {
+                    lisp[i].classList.add("current")
+                } else {
+                    lisp[i].classList.remove("current")
+                }
+            }
+        }
+        var timer = setInterval(function () {
+            right.onclick();
+        }, 1500);
+        box.onmouseover = function () {
+            clearInterval(timer)
+        };
+        box.onmouseout = function () {
+            timer = setInterval(function () {
+                right.onclick();
+            }, 1500);
+        };
+    }  
+</script>
+
+</html>

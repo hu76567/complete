@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: cadetblue;
+      margin: 150px auto;
+    }
+
+    .aa {
+      width: 200px;
+      height: 200px;
+      background-color: rgb(92, 34, 158);
+      margin: 150px auto;
+    }
+
+    .bb {
+      width: 200px;
+      height: 200px;
+      background-color: rgb(114, 219, 66);
+      margin: 150px auto;
+    }
+  </style> -->
+</head>
+
+<body>
+  <!-- <button id="btn">变蓝</button>
+  <button id="btn_1">变白</button> -->
+
+  <!-- 一键关灯 -->
+  <!-- <input type="button" id="btn" value="关灯"> -->
+
+  <!-- focus blur事件 -->
+  <!-- <form action="">
+    <input type="text" id="ipt" name="sub" autocomplete="on">
+    <input type="submit" name="sub">
+  </form> -->
+
+
+
+  全选<input type="checkbox" name="" id="checkAll"><br />
+  <input type="checkbox" name="" class="ck"><br />
+  <input type="checkbox" name="" class="ck"><br />
+  <input type="checkbox" name="" class="ck">
+</body>
+<script>
+
+
+  //-------------------  全选与反选  ---------------------------
+  var all = document.getElementById("checkAll");
+  var cks = document.getElementsByClassName("ck");
+  // 给all注册点击事件
+  all.onclick = function () {
+    //点击全选后的结果
+    for (var i = 0; i < cks.length; i++) {
+      //子选项都被选，和父级一样
+      cks[i].checked = all.checked;
+    }
+  }
+  for (var i = 0; i < cks.length; i++) {
+    cks[i].onclick = function () {
+      for (var j = 0; j < cks.length; j++) {
+        if (cks[j].checked == false) {
+          break;
+        }
+      }
+      if (j == cks.length) {
+        all.checked = true;
+      } else {
+        all.checked = false;
+      }
+    }
+  }
+  //-----------------      --------------------------
+
+
+
+
+
+  // var btn = document.getElementById("btn");
+  // btn.onclick = function () {
+  //   document.body.style.backgroundColor = "blue";
+  // }
+  // var btn = document.getElementById("btn_1");
+  // btn.onclick = function () {
+  //   document.body.style.backgroundColor = "white";
+  // }
+
+
+
+  //--------------------一键关灯-----------------------
+  // var btn = document.getElementById("btn");
+  // var body = document.body;
+  // btn.onclick = function () {
+  //   if (btn.value == "开灯") {
+  //     document.body.style.backgroundColor = "white";
+  //     btn.value = "关灯";
+  //   } else {
+  //     document.body.style.backgroundColor = "black";
+  //     btn.value = "开灯";
+  //   }
+  // }
+
+
+  // focus  blur事件
+  // var ipt = document.getElementById("ipt");
+  // ipt.onfocus = function () {
+  //   console.log("获得光标")
+  // };
+  // ipt.onblur = function () {
+  //   console.log("失去光标")
+  // };
+
+</script>
+
+</html>

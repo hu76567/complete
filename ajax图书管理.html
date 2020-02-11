@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>图书管理</title>
+  <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet">
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/semantic-ui/2.4.1/semantic.min.js"></script>
+</head>
+
+<body>
+  <div class="ui segment black" style="margin-bottom:40px">
+    <div class="ui page grid">
+      <div class="ui row header">
+        图书管理系统
+      </div>
+    </div>
+  </div>
+
+  <div class="ui page grid">
+    <!-- 添加图书的Panel面板 -->
+
+    <div class="ui row  ">
+
+      <div class="ui column fluid form segment">
+        <h3 class="ui header dividing">
+          <i class="book icon"></i>
+          <div class="content">
+            添加图书
+          </div>
+        </h3>
+        <div class="three fields">
+          <div class="required field">
+            <label>书名</label>
+            <input id="iptBookname" name="iptBookname" placeholder="书名" type="text">
+          </div>
+          <div class="required field">
+            <label>作者</label>
+            <input id="iptAuthor" placeholder="作者" type="text">
+          </div>
+          <div class="required field">
+            <label>出版社</label>
+            <input id="iptPublisher" placeholder="出版社" type="text">
+          </div>
+        </div>
+        <button class="ui  button blue submit      " type="button" id="btnAdd">添加</button>
+        <div class="ui error message"></div>
+      </div>
+    </div>
+
+    <div class="ui row">
+      <div class="ui column segment">
+        <h3 class="ui header dividing">
+          <i class="book icon"></i>
+          <div class="content">
+            图书列表
+          </div>
+        </h3>
+        <table class="ui  small table blue striped">
+          <thead>
+          </thead>
+          <tbody id="tb">
+        </table>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script>
+  //  jQuery入口函数
+  $(function () {
+    // -----------------------获取并渲染到页面-------------------------
+    //  封装成一个函数
+    function GAS() {
+      // 调用.ajax()方法
+      $.ajax({
+        // 设置接口地址
+        url: 'http://ajax.frontend.itheima.net:3006/api/getbooks',
+        // 设置发送请求的方式
+        type: "get",
+        // data:
+        // res从接口处返回的数据
+        success: function (res) {
+          // 判断是否成功获取到数据
+          if (res.status === 200) {
+            // 清空已经显示的数据
+            $('#tb').empty();
+            // 图书的数据存在res.data中
+            // 将jq对象转化成dom对象
+            //  将从后台获取的数据对象存在数组中，遍历
+            res.data.forEach(function (book) {
+              var str = `<tr>
+              <td>${book.id}</td>
+              <td>${book.bookname}</td>
+              <td>${book.author}</td>
+              <td>${book.publisher}</td>
+              <td><a href="javascript:;" class="del" data-id="${book.id}">删除</a></td>
+              </tr>`
+              // 从后添加显示在dom中
+              $("#tb").append(str);
+            });
+          }
+        }
+      })
+    }
+    GAS();
+    setInterval(function () {
+      $("#tb").remove();
+    }
+      , 200
+    )
+
+
+    //  ---------------------------添加-------------------------------
+    $("#btnAdd").click(function () {
+      var bookname = $('#iptBookname').val().trim();
+      var author = $('#iptAuthor').val().trim();
+      var publisher = $('#iptPublisher').val().trim();
+      if (bookname.length === 0 || author.length === 0 || publisher === 0) {
+        alert('不能为空')
+      }
+
+      $('#btnAdd').addClass("loading");
+
+      $.ajax({
+        url: 'http://ajax.frontend.itheima.net:3006/api/addbook',
+        type: "post",
+        data: {
+          'bookname': bookname,
+          'author': author,
+          'publisher': publisher,
+        },
+        success: function (res) {
+          $('#btnAdd').removeClass("loading");
+          if (res.status === 201) {
+            GAS();
+            $("#iptBookname").val('');
+            $('#iptAuthor').val('')
+            $('#iptPublisher').val('')
+          }
+        }
+      })
+    })
+
+
+    // ----------------------------删除-------------------------------
+    $('#tb').on('click', '.del', function () {
+      var id = $(this).attr("data-id");
+      console.log(id)
+      $.ajax({
+        url: 'http://ajax.frontend.itheima.net:3006/api/delbook',
+        type: 'get',
+        data: {
+          "id": id
+        },
+        success: function (res) {
+          console.log(res)
+          if (res.status === 200) {
+            GAS();
+          } else {
+            alert(res.msg);
+          }
+        }
+      })
+    })
+  })
+</script>
+
+</html>
