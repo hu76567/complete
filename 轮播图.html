@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 
 <head>
     <meta charset="utf-8">
@@ -92,10 +92,6 @@
         .arrow-right {
             right: 0;
         }
-
-        .dis {
-            display: none;
-        }
     </style>
 </head>
 
@@ -146,7 +142,6 @@
         var right = document.querySelector(".arrow-right");
         var lis = document.querySelectorAll("li");
         var ul = document.querySelector("#imglist");
-        var pics = document.querySelector("#imglist>li");
         var w = lis[0].offsetWidth;
         var lisp = document.querySelectorAll("i");
         var num = 0;
@@ -161,6 +156,15 @@
             var juli = num * w;
             //    移动
             ul.style.left = `-${juli}px`;
+
+            // 修改小点样式
+            for (var i = 0; i < lisp.length; i++) {
+                if (i == num) {
+                    lisp[i].classList.add("current")
+                } else {
+                    lisp[i].classList.remove("current")
+                }
+            }
         }
 
         right.onclick = function () {
@@ -187,14 +191,14 @@
         }
         var timer = setInterval(function () {
             right.onclick();
-        }, 1500);
+        }, 2500);
         box.onmouseover = function () {
             clearInterval(timer)
         };
         box.onmouseout = function () {
             timer = setInterval(function () {
                 right.onclick();
-            }, 1500);
+            }, 2500);
         };
     }  
 </script>

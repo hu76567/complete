@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 
 <head>
     <meta charset="UTF-8">
@@ -28,7 +28,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            border: 10px solid #000;
+            border: 2px solid #000;
         }
 
         .mask {
@@ -96,7 +96,7 @@
         };
 
         box.onmousemove = function (e) {
-            // e.pageX  e.pageY
+            // 先获取小黄块左上角在box中的坐标
             var left = e.pageX - mask.offsetWidth / 2 - box.offsetLeft;
             var top = e.pageY - mask.offsetHeight / 2 - box.offsetTop;
 
@@ -117,11 +117,12 @@
 
             mask.style.left = left + "px";
             mask.style.top = top + "px";
-            // 设置黄色阴影移动范围
 
 
+            //实现放大
             var x = max_left;
             var X = img.offsetWidth - big.clientWidth;
+            //大图移动的距离和小黄块移动距离的比例
             var bigLeft = left * X / x;
             img.style.left = -bigLeft + 'px';
 
