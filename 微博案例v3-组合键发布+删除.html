@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>微博发布效果</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .weibo {
+      width: 600px;
+      border: 1px solid #ccc;
+      margin: 100px auto;
+      padding: 10px;
+    }
+
+    .weibo-text {
+      width: 590px;
+      height: 140px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      outline: none;
+      resize: none;
+    }
+
+    .weibo-text:focus {
+      border-color: #f60;
+    }
+
+    .weibo-btn {
+      width: 80px;
+      height: 30px;
+      background-color: #f90;
+      color: #fff;
+      border: 0 none;
+      margin-top: 5px;
+      border-radius: 3px;
+      cursor: pointer;
+      outline: 0 none;
+    }
+
+    .weibo-list {
+      padding-top: 10px;
+    }
+
+    .weibo-list li {
+      font-size: 14px;
+      line-height: 30px;
+      border-bottom: 1px dotted #ccc;
+      overflow: hidden;
+    }
+
+    .weibo-list li p {
+      float: left;
+    }
+
+    .weibo-list li span {
+      float: right;
+      cursor: pointer;
+    }
+
+    .weibo-list li input {
+      height: 24px;
+      line-height: 24px;
+      width: 300px;
+      font-size: 14px;
+      border: 0 none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weibo">
+    <textarea class="weibo-text"></textarea>
+    <input class="weibo-btn" value="发布" type="button">
+    <ul class="weibo-list">
+
+    </ul>
+  </div>
+</body>
+<script>
+
+  var btn = document.querySelector(".weibo-btn");
+  var text = document.querySelector(".weibo-text");
+  var ul = document.querySelector(".weibo-list");
+
+  var list = [];
+
+  //获取本地
+
+  var str = localStorage.getItem("list")
+  if (str == null) {
+
+  } else {
+    list = JSON.parse(str)
+  }
+  for (var i = 0; i < list.length; i++) {
+    var info = list[i]
+    var li = document.createElement('li')
+    li.innerHTML = `<p>${info.val}</p><span id_num=${info.id_num}>删除</span>`;
+    ul.appendChild(li)
+  }
+
+
+
+  //添加
+  btn.onclick = function () {
+    var id_num = Math.random() + '_' + Date.now()
+    var val = text.value;
+    var li = document.createElement("li");
+    li.innerHTML = `<p>${val}</p><span id_num=${id_num}>删除</span>`;
+    var lis = ul.children
+    ul.insertBefore(li, lis[0]);
+    text.value = "";
+
+    //本地缓存
+    var info = {};
+    info.val = val;
+    info.id_num = id_num
+    list.unshift(info)
+    var str = JSON.stringify(list)
+    localStorage.setItem('list', str)
+  }
+
+
+  //删除
+  ul.onclick = function (e) {
+    if (e.target.nodeName == 'SPAN') {
+      var li = e.target.parentNode;
+      ul.removeChild(li)
+    }
+
+    var del_id = e.target.getAttribute('id_num')
+
+    for (var i = 0; i < list.length; i++) {
+      var info = list[i]
+      if (info.id_num == del_id) {
+        list.splice(i, 1)
+        break;
+      }
+    }
+    var str = JSON.stringify(list)
+    localStorage.setItem('list', str)
+  }
+
+
+
+  //组合键发布
+  text.onkeydown = function (e) {
+    if (e.keyCode == 13 && e.ctrlKey || e.keyCode == 13) {
+      btn.click()
+    }
+  }
+</script>
+
+</html>

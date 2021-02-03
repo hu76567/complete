@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    var xh = ["笑话1", "笑话2", "笑话3", "笑话4", "笑话5"]
+    var XN = {
+        qh: function () {
+            var arr = str.split(',')
+            var sum = 0;
+            for (var i = 0; i < arr.length; i++) {
+                arr[i] = arr[i] * 1
+                sum += arr[i]
+            }
+            return sum
+        },
+        yh: function (num) {
+            if (num < 10) {
+                num = "0" + num
+            }
+            return num
+        },
+        time: function () {
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            month = XN.yh(month)
+            var day = date.getDate();
+            day = XN.yh(day)
+            var hour = date.getHours();
+            hour = XN.yh(hour)
+            var minute = date.getMinutes();
+            minute = XN.yh(minute)
+            var second = date.getSeconds();
+            second = XN.yh(second)
+            var time = `${year}-${month}-${day}  ${hour}:${minute}:${second}`
+            return time
+        },
+        getXh: function () {
+            var x = Math.random() * xh.length
+            var index = Math.floor(x)
+            return index
+        }
+    }
+
+    while (true) {
+        var res = prompt("您好,我是小娜,请选择功能 : \n输入q: 退出; \n输入 1: 求和; \n输入 2: 系统时间;\n输入 3: 随机笑话;\n输入 4: 添加笑话;")
+        if (res == 'q') {
+            break
+        }
+        else if (res == '1') {
+            var str = prompt("请输入以下格式的数据:1,2,3 (必须用,隔开)")
+            var sum = XN.qh();
+            alert("求和结果为:" + sum)
+        }
+        else if (res == '2') {
+            var time = XN.time();
+            alert(time)
+        }
+        else if (res == '3') {
+
+            var index = XN.getXh();
+            alert(xh[index])
+        }
+        else if (res == '4') {
+            var n_xh = prompt("请按照以下格式输入笑话组，须用 |隔开)")
+            var aa = n_xh.split('|')
+            xh = xh.concat(aa)
+        }
+    }
+</script>
+
+</html>

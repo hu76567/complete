@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    body {
+      height: 4000px;
+      background-color: #ccc;
+    }
+    
+    img {
+      /* 绝对定位：相对于页面的左上角 */
+      /* position: absolute; */
+      /* 固定定位：相对于可视区域 */
+      position: fixed;
+      /* 过渡 */
+      /* transition: all 0.3s; */
+    }
+  </style>
+</head>
+
+<body>
+  <img src="./images/tianshi.gif" id="img" alt="">
+</body>
+<script>
+  // 需求：跟着鼠标动；
+
+
+  // 分析：
+  //   1.鼠标移动事件，注册给谁？body
+  //   2.怎么跟着动？鼠标的位置？让图片设置定位；
+  var aa = document.querySelector("img");
+  document.body.onmousemove = function(e) {
+    console.log(e.clientX, e.clientY);
+
+
+    // 看图片用什么定位？
+    // aa.style.left = e.pageX + "px";
+    // aa.style.top = e.pageY + "px";
+
+    aa.style.left = e.clientX + "px";
+    aa.style.top = e.clientY + "px";
+
+  }
+</script>
+
+</html>

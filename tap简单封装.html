@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: #0a0;
+    }
+
+    .box_1 {
+      width: 200px;
+      height: 200px;
+      background-color: #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <div class="box_1"></div>
+  <button>按钮</button>
+</body>
+<script>
+  // 需求：移动端的点击行为 tap，给某个元素把过程实现
+  // 开始和离开的时候，位置要接近；
+  //   触摸屏幕的时候，记录开始触摸的位置；
+  //   离开屏幕的时候，记录离开时的位置；
+  //   离开时的位置-开始触摸的位置  < 规定值；
+  // 开始和离开的时候，时间要短；
+  //   触摸屏幕的时候，记录开始触摸的时间；
+  //   触摸屏幕的时候，记录离开的时间；
+  //   离开的时间- 开始触摸的时间 < 规定值;
+
+  // 1.实际过程：
+  // 2.函数封装：
+
+  // 封装能力：写源
+  function Tap(DOM, fn) {
+
+    var start_x, start_y, start_time;
+    // 开始触摸
+    DOM.addEventListener("touchstart", function (e) {
+      // console.log();
+      var point = e.touches[0];
+
+      // 记录位置；
+      start_x = point.pageX;
+      start_y = point.pageY;
+
+      // 开始触摸时间
+      start_time = Date.now();
+    });
+
+
+    // 离开屏幕：
+    DOM.addEventListener("touchend", function (e) {
+
+      // 手指离开屏幕时的点（有很多个）的对象（位置信息）
+      // [0] : 第一个点的对象
+      var point = e.changedTouches[0];
+
+      // 记录离开点的位置
+      var end_x = point.pageX;
+      var end_y = point.pageY;
+
+      // 结束触摸时间
+      var end_time = Date.now();
+
+
+      // 离开时的位置-开始触摸的位置  < 规定值(自己定的一个值)；
+      if (Math.abs(end_y - start_y) < 30 && Math.abs(end_x - start_x) < 30 && end_time - start_time < 500) {
+        // 满足条件 执行函数
+        fn();
+      }
+
+    });
+  }
+
+  // 原生没有封装：JQ对原生 PC封装；
+  // dom.addEventListener("click", function() {
+
+  // });
+
+  // 赋值：
+  // box.onclick = function() {}
+
+  // 用户 点击
+  // 执行 function() {}
+
+  // 参数：用户注册 点击
+  // 点击执行：function() {}
+  // box.addEventListener("click", function() {});
+  // 类似
+
+  // 调用：第一个参数 DOM 给谁注册，第二参数：点击之后有什么行为‘；+
+  var box = document.querySelector(".box");
+  Tap(box, function () {
+    alert(1);
+  });
+
+  var box_1 = document.querySelector(".box_1");
+  Tap(box_1, function () {
+    alert(2)
+  });
+
+  var btn = document.querySelector("button");
+  Tap(btn, function () {
+    alert(3)
+  });
+
+  // DOM = box, fn = function() {};
+
+
+  // 成长：
+  //   学习：学这些怎么用？怎么来的不用关心；               使用者
+  //   源码：JQ背后怎么实现？vue框架！！！大牛；            创造者
+
+
+
+  // webAPI: 原生JS  DOM ，没有封装；
+  // JQ    ：原生JS封装好，调用特别的方便；
+
+
+  // 移动端：touchstart move end :原生JS
+  //  自己 ：试着封装了,感觉特别麻烦；
+  // zepto : 封装好的功能，更简单的使用
+</script>
+
+</html>

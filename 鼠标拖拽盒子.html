@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 800px;
+        }
+
+        .box {
+            position: absolute;
+            width: 500px;
+            height: 300px;
+            top: 150px;
+            left: 200px;
+            background-color: coral;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box"></div>
+</body>
+
+<script type="text/javascript">
+    var box = document.querySelector('.box')
+    var body = document.body
+
+    box.onmousedown = function (e) {
+        var a = e.pageX - box.offsetLeft
+        var b = e.pageY - box.offsetTop
+        body.onmousemove = function (e) {
+            box.style.left = e.pageX - a + 'px'
+            box.style.top = e.pageY - b + 'px'
+        }
+    }
+    box.onmouseup = function () {
+        body.onmousemove = null
+    }
+</script>
+
+</html>

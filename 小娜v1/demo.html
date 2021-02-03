@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    while (true) {
+        var res = prompt("您好,我是小爱,请选择功能 : \n输入q: 退出; \n输入 1: 求和; \n输入 2: 系统时间;\n输入 3: 笑话;")
+        if (res == 'q') {
+            break
+        }
+        else if (res == '1') {
+            var str = prompt("请输入以下格式的数据:1,2,3 (必须用,隔开)")
+            var arr = str.split(',')
+            var sum = 0;
+            for (var i = 0; i < arr.length; i++) {
+                arr[i] = arr[i] * 1
+                sum += arr[i]
+            }
+            alert("求和结果为:" + sum)
+
+        }
+        else if (res == '2') {
+            var date = new Date();
+            var year = date.getFullYear();
+
+            var month = date.getMonth() + 1;
+            if (month < 10) {
+                month = "0" + month
+            }
+            var day = date.getDate();
+            if (day < 10) {
+                day = "0" + day
+            }
+            var hour = date.getHours();
+            if (hour < 10) {
+                hour = "0" + hour
+            }
+            var minute = date.getMinutes();
+            if (minute < 10) {
+                minute = "0" + minute
+            }
+            var second = date.getSeconds();
+            if (second < 10) {
+                second = "0" + second
+            }
+            alert(`当前时间是:${year}-${month}-${day}  ${hour}:${minute}:${second}`)
+        }
+        else if (res == '3') {
+            var xh = ["笑话1", "笑话2", "笑话3", "笑话4", "笑话5"]
+            var x = Math.random() * xh.length
+            var sj = Math.floor(x)
+            alert(sj)
+        }
+    }
+</script>
+
+</html>
