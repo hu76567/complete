@@ -122,7 +122,7 @@
             //实现放大
             var x = max_left;
             var X = img.offsetWidth - big.clientWidth;
-            //大图移动的距离和小黄块移动距离的比例
+            //计算移动比例
             var bigLeft = left * X / x;
             img.style.left = -bigLeft + 'px';
 
