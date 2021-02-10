@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>微博发布效果</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .weibo {
+      width: 600px;
+      border: 1px solid #ccc;
+      margin: 100px auto;
+      padding: 10px;
+    }
+
+    .weibo-text {
+      width: 590px;
+      height: 140px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      outline: none;
+      resize: none;
+    }
+
+    .weibo-text:focus {
+      border-color: #f60;
+    }
+
+    .weibo-btn {
+      width: 80px;
+      height: 30px;
+      background-color: #f90;
+      color: #fff;
+      border: 0 none;
+      margin-top: 5px;
+      border-radius: 3px;
+      cursor: pointer;
+      outline: 0 none;
+    }
+
+    .weibo-list {
+      padding-top: 10px;
+    }
+
+    .weibo-list li {
+      font-size: 14px;
+      line-height: 30px;
+      border-bottom: 1px dotted #ccc;
+      overflow: hidden;
+    }
+
+    .weibo-list li p {
+      float: left;
+    }
+
+    .weibo-list li span {
+      float: right;
+      cursor: pointer;
+    }
+
+    .weibo-list li input {
+      height: 24px;
+      line-height: 24px;
+      width: 300px;
+      font-size: 14px;
+      border: 0 none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weibo">
+    <textarea class="weibo-text"></textarea>
+    <input class="weibo-btn" value="发布" type="button">
+    <ul class="weibo-list">
+
+    </ul>
+  </div>
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script>
+  $(function () {
+    var arr = []
+
+    //获取本地数据
+    var str = localStorage.getItem('list');
+    if (str != null) {
+      arr = JSON.parse(str)
+    }
+    $.each(arr, function (i, item) {
+      var li = $('<li></li>');
+      //添加
+      li.html(`<p>${item.val}</p><span sf=${item.sf}>删除</span>`);
+      //dom加
+      $('ul').append(li);
+    })
+
+
+    // -----------------发布
+    $('.weibo-btn').on('click', function () {
+      var sf_id = Math.random() + '_' + Date.now()
+      //创建
+      var li = $('<li></li>');
+      var val = $('.weibo-text').val();
+      //添加
+      li.html(`<p>${val}</p><span sf=${sf_id}>删除</span>`);
+      //dom加
+      $('ul').prepend(li);
+      //清空输入框
+      $('.weibo-text').val('');
+
+      var per = {
+        val: val,
+        sf: sf_id
+      };
+      arr.unshift(per)
+      var str = JSON.stringify(arr);
+      localStorage.setItem('list', str)
+    })
+
+
+    // ------------------------删除
+    $('ul').on('click', 'span', function () {
+      $(this).parent().remove();
+
+      var del_id = $(this).attr('sf');
+      $.each(arr, function (i, item) {
+        if (arr[i].sf == del_id) {
+          arr.splice(i, 1)
+          return false;
+        }
+      })
+      var str = JSON.stringify(arr)
+      localStorage.setItem('list', str)
+    })
+  })
+</script>
+
+</html>

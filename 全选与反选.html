@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      border: 1px solid #c0c0c0;
+      width: 500px;
+      margin: 100px auto;
+      text-align: center;
+    }
+    
+    th {
+      background-color: #09c;
+      font: bold 16px "微软雅黑";
+      color: #fff;
+      height: 24px;
+    }
+    
+    td {
+      border: 1px solid #d0d0d0;
+      color: #404060;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <th>
+        <input type="checkbox" name="" id="checkAll" /> 全选/全不选
+      </th>
+      <th>菜名</th>
+      <th>商家</th>
+      <th>价格</th>
+    </tr>
+    <tr>
+      <td>
+        <input type="checkbox" name="check" class="ck" />
+      </td>
+      <td>红烧肉</td>
+      <td>隆江猪脚饭</td>
+      <td>￥200</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="checkbox" name="check" class="ck" />
+      </td>
+      <td>香酥排骨</td>
+      <td>隆江猪脚饭</td>
+      <td>￥998</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="checkbox" name="check" class="ck" />
+      </td>
+      <td>北京烤鸭</td>
+      <td>隆江猪脚饭</td>
+      <td>￥88</td>
+    </tr>
+  </table>
+
+</body>
+<script>
+  // 需求：点击全选或者全不选，下面子选跟着动
+
+  // 1.获取DOM？
+  var all = document.getElementById("checkAll");
+  // 
+  var cks = document.getElementsByClassName("ck");
+  // 2.给all注册点击
+  all.onclick = function() {
+    // 3.点击之后？谁怎么了？
+    //  子选项跟着 all 在动：
+    //      1. 获取 all 状态  all.checked
+    //      2. 把  all 状态 设置到子选项上面；每一个子选项都是同样状态？
+    for (var i = 0; i < cks.length; i++) {
+      cks[i].checked = all.checked;
+    }
+  };
+
+
+
+
+  // 1.给每个子选注册点击事件
+  for (var i = 0; i < cks.length; i++) {
+    // 只是注册。怎么时候执行？用户点击的时候，才执行函数内部代码
+    cks[i].onclick = function() {
+
+      // 判断 3兄弟 每个都是全选的状态  all-->全选
+      // 判断 3兄弟 至少有一个没有选中  all-->不选
+      for (var j = 0; j < cks.length; j++) {
+        // 至少有一个没有选中
+        if (cks[j].checked == false) {
+          break;
+        }
+
+      }
+
+      // j: 什么时候 是 3？上面for循环，一次不拉的循环完毕，
+      //     意味着没有一次进入 break；
+      //     意味子选都是选择状态
+
+      // j: 什么时候 不是3？for被中途 break
+      //     意味着 分支 进入
+      //     意味着 有一个没有选中
+
+      if (j == cks.length) {
+        all.checked = true;
+      }
+      // 
+      else {
+        all.checked = false;
+      }
+
+
+
+
+
+
+    }
+  }
+</script>
+
+</html>
